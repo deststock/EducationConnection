@@ -2,13 +2,14 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html>
 <head>
 <link rel="stylesheet" href="/css/style.css" />
 <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
 <meta charset="UTF-8">
-<title> Attendance </title>
+<title>Attendance</title>
 </head>
 <body>
 	<main>
@@ -43,42 +44,44 @@
 				<div class="greeting"></div>
 				<div class="tablecont">
 					<table class="table table-striped">
-						<tr>
-							<th>Name</th>
-							<th>10/18/2021</th>
-							<th>10/19/2021</th>
-							<th>10/20/2021</th>
-							<th>10/21/2021</th>
-							<th>10/22/2021</th>
-						</tr>
 						<c:forEach var="s" items="${students}">
 							<tr>
-								<td> <span id="atten">${s.firstName} ${s.lastName}</span></td>
-								<td> n/a </td>
-								<td> n/a </td>
-								<td> n/a </td>
-								<td> n/a </td>
-								<td> n/a </td>
+								<td>${s.firstName} ${s.lastName}</td>
+
+								<c:forEach var="a" items="${s.getAttendances()}">
+									<td><c:if test="${a.status  == 'h'}">
+											<span class="here">${a.date.month+1}/${a.date.date}</span>
+										</c:if> <c:if test="${a.status  == 'a'}">
+											<span class="absent">${a.date.month+1}/${a.date.date}</span>
+										</c:if></td>
+								</c:forEach>
 
 							</tr>
 						</c:forEach>
 					</table>
 				</div>
-			</div>
-			<div id="newEventModal">
-			<form:form action="/attendance/${s.id}" method="post"
-				modelAttribute="attendance">
-				<div class="errors">
-					<form:errors path="status" class="errors" />
-					<form:errors path="date" class="errors" />
+				<div id="" class="bottomform">
+					<h2>Add Attendance Record</h2>
+
+					<form:form action="/attendance" method="post"
+						modelAttribute="attendance">
+						<div class="errors">
+							<form:errors path="status" class="errors" />
+							<form:errors path="date" class="errors" />
+						</div>
+						<div class="inputs">
+							<form:select path="student" value="${s}">
+								<c:forEach var="s" items="${students}">
+									<form:option path="student" value="${s}" onchange="">${s.firstName } </form:option>
+								</c:forEach>
+							</form:select>
+							<%-- <form:input type="hidden" path="student" value="${s.id}" /> --%>
+							<form:input path="status" placeholder="Here(h) or Absent(a)" />
+							<form:input type="date" path="date" placeholder="" />
+						</div>
+						<input type="submit" value="Add" class="button" />
+					</form:form>
 				</div>
-				<div class="inputs">
-					<form:input type="hidden" path="student" value="${s.id }" />
-					<form:input path="status" placeholder="Here(h) or Absent(a)" />
-					<form:input type="date" path="date" />
-				</div>
-				<input type="submit" value="Add" class="button" />
-			</form:form>
 			</div>
 			<div id="modalBackDrop"></div>
 
@@ -86,6 +89,10 @@
 	</main>
 	<div class="circle1"></div>
 	<div class="circle2"></div>
-	<script type="text/javascript" src="js/atten.js"></script>
+	<%! final static String DATE_FORMAT_NOW = "dd/MM/yy"; %>
+	<%
+	SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT_NOW);
+	%>
+	<!-- <script type="text/javascript" src="js/atten.js"></script> -->
 </body>
 </html>

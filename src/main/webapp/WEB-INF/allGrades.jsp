@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,8 +51,16 @@
 						</tr>
 						<c:forEach var="s" items="${students}">
 							<tr>
-								<td><a href="/grades/${s.id}" class="namelink">${s.firstName} ${s.lastName}</a></td>
-								<td>help</td>
+								<td><a href="/grades/${s.id}" class="namelink">${s.firstName}
+										${s.lastName}</a></td>
+								<td>
+									<!-- calculating average grade here  -->
+										<c:set var="gradeTotal" value="${0}" />
+										<c:forEach var="g" items="${s.getAssignments()}">
+											<c:set var="gradeTotal" value="${gradeTotal + g.grade}" />
+										</c:forEach>
+									<fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="1" value="${gradeTotal/s.getAssignments().size()}" />
+								</td>
 							</tr>
 						</c:forEach>
 					</table>

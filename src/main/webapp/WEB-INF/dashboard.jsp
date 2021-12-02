@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/css/style.css" />
 <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
 <meta charset="UTF-8">
-<title>Education Connection Dashboard</title>
+<title>Dashboard</title>
 </head>
 <body>
 	<main>
@@ -58,7 +58,7 @@
 							Today is <span id='date-time'></span>
 						</h3>
 						<div class="attendance">
-							<p>It looks like you haven't taken attendance today...</p>
+							<p>Have you taken attendance today? </p>
 							<a href="/attendance" class="button">Take Attendance!</a>
 						</div>
 					</div>

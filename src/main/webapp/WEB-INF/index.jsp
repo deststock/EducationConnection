@@ -14,7 +14,7 @@
 <body>
 	<main>
 		<section class="glass">
-				<div class="dashboard">
+				<div class="dashboard2">
 					<div class="top">
 						<h1>Education Connection</h1>
 					</div>

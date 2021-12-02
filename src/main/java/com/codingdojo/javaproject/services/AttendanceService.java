@@ -27,5 +27,11 @@ public class AttendanceService {
 		return attRepo.save(a);
 	}
 	
+	// DELETE ALL FOR ONE STUDENT 
+	public void deleteAll(Long id) {
+		List<Attendance> attendances = attRepo.findAllByStudentId(id);
+		attRepo.deleteAll(attendances);
+	}
+	
 	
 }

@@ -52,6 +52,7 @@
 							<th>Grade</th>
 							<th>Actions</th>
 						</tr>
+						<!-- calculating average grade here  -->
 						<c:set var="gradeTotal" value = "${0}"/>
 						<c:forEach var="s" items="${assignments}">
 						<c:set var="gradeTotal" value = "${gradeTotal + s.grade}"/>

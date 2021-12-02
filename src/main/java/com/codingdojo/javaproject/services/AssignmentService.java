@@ -1,12 +1,12 @@
 package com.codingdojo.javaproject.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.codingdojo.javaproject.models.Assignment;
+import com.codingdojo.javaproject.models.Attendance;
 import com.codingdojo.javaproject.repositories.AssignmentRepository;
 import com.codingdojo.javaproject.repositories.StudentRepository;
 
@@ -29,7 +29,7 @@ public class AssignmentService {
 		return assignments;
 	}
 	
-	// RETURNS STUDENTS AVERAGE 
+	// RETURNS ONE STUDENTS AVERAGE 
 	public Double average(Long id) {
 		List<Assignment>assignments = stuAssignments(id);
 		Double sum = 0.0;
@@ -51,6 +51,12 @@ public class AssignmentService {
 	public void deleteAssignment(Long id) {
 		assignmentRepo.deleteById(id);
 	}
+	
+	// DELETE ALL FOR ONE STUDENT 
+		public void deleteAll(Long id) {
+			List<Assignment> assignments = assignmentRepo.findAllByStudentId(id);
+			assignmentRepo.deleteAll(assignments);
+		}
 
 	
 }

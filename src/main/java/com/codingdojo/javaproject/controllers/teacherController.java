@@ -47,7 +47,7 @@ public class teacherController {
 		return "dashboard.jsp";
 	}
 
-	// ALL STUDENTS AND THEIR GRADES
+	// ALL STUDENTS AND THEIR AVERAGE GRADE
 	@RequestMapping("/grades")
 	public String grades(HttpSession session, Model model, @ModelAttribute("student") Student student ) {
 		Long userId = (Long) session.getAttribute("user_id");
@@ -58,7 +58,7 @@ public class teacherController {
 		return "allGrades.jsp";
 	}
 
-	// ONE STUDENTS GRADES AND ASSIGNMENTS PAGE
+	// ONE STUDENTS GRADES/GRADE AVERAGE AND ASSIGNMENTS PAGE
 	@RequestMapping("/grades/{id}")
 	public String studentGrades(@PathVariable("id") Long id, HttpSession session, Model model, @ModelAttribute("assignment") Assignment assignment) {
 		Long userId = (Long) session.getAttribute("user_id");
@@ -103,19 +103,18 @@ public class teacherController {
 		return "attendance.jsp";
 	}
 	
-	// ATTENDANCE METHOD 
-	@RequestMapping(value="/attendance/{id}", method = RequestMethod.POST)
-	public String takeAtten(@Valid @ModelAttribute("attendance") Attendance attendance, BindingResult result, Model model, HttpSession session, @PathVariable("id") Long id) {
+	// ADD ATTENDANCE METHOD 
+	@RequestMapping(value="/attendance", method = RequestMethod.POST)
+	public String takeAtten(@Valid @ModelAttribute("attendance") Attendance attendance, BindingResult result, Model model, HttpSession session) {
 		Long userId = (Long) session.getAttribute("user_id");
 		User thisUser = userServ.findOne(userId);
 		model.addAttribute("thisUser", thisUser);
-		Student student = studentServ.findStudent(id);
-		model.addAttribute("student", student);
 		List<Attendance> attens = attServ.allAttendance();
 		model.addAttribute("attens", attens);
 		if (result.hasErrors()){
 			return "attendance.jsp";
 		} else {
+			System.out.print(attendance.getId() + ",");
 			attServ.newAttendance(attendance);
 			return "redirect:/attendance";
 		}
@@ -151,6 +150,8 @@ public class teacherController {
 	// DELETE STUDENT 
 	@RequestMapping("/students/{id}/delete")
 	public String deleteStudent(@PathVariable("id") Long id) {
+		attServ.deleteAll(id);
+		assignServ.deleteAll(id);
 		studentServ.deleteStudent(id);
 		return "redirect:/students";
 	}
